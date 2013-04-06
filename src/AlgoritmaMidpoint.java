@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.HeadlessException;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import javax.swing.JDialog;
 
 /*
  * To change this template, choose Tools | Templates
@@ -16,14 +15,14 @@ import javax.swing.JDialog;
  *
  * @author Asep Rojali
  */
-public class AlgoritmaDDA extends JDialog {
+public class AlgoritmaMidpoint extends Frame {
 
     public static void main(String[] args) {
-        new AlgoritmaDDA();
+        new AlgoritmaMidpoint();
     }
 
-    public AlgoritmaDDA() throws HeadlessException {
-        //super("Algoritma DDA");
+    public AlgoritmaMidpoint() throws HeadlessException {
+        super("Algoritma Midpoint");
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -39,7 +38,7 @@ public class AlgoritmaDDA extends JDialog {
 
     class CvDDA extends Canvas {
 
-        //Inisialisasi canvas untuk menggambar
+        //Inisialisasi canvas untuk gambar
         float rWidth = 10.0F, rHeight = 7.5F, pixelSize;
         int centerX, centerY, dGrid = 10, maxX, maxY;
 
@@ -66,31 +65,31 @@ public class AlgoritmaDDA extends JDialog {
 
         }
 
-        //Menghitung algoritma DDA
-        void DDA(Graphics g, int x0, int y0, int x1, int y1) {
-            int x = x0, y = y0, dX = x1 - x0, dY = y1 - y0;
-            int step, xInc, yInc;
+        //Menghitung Algoritma Midpoint
+        void drawCircle(Graphics g, int xC, int yC, int r) {
+            int x = 0, y = r, u = 1, v = 2 * r - 1, E = 0;
+            while (x < y) {
+                putPixel(g, xC + x, yC + y); 
+                putPixel(g, xC + y, yC - x); 
+                putPixel(g, xC - x, yC - y); 
+                putPixel(g, xC - y, yC + x); 
+                x++;
+                E += u;
+                u += 2;
+                if (v < 2 * E) {
+                    y--;
+                    E -= v;
+                    v -= 2;
+                }
+                if (x > y) {
+                    break;
+                }
+                putPixel(g, xC + y, yC + x); 
+                putPixel(g, xC + x, yC - y); 
+                putPixel(g, xC - y, yC - x); 
+                putPixel(g, xC - x, yC + y); 
 
-            if (dX > dY) {
-                step = Math.abs(dX);
             }
-            step = Math.abs(dY);
-            System.out.println("Nilai dX " + dX);
-            System.out.println("Nilai dY " + dY);
-
-            xInc = dX / step;
-            yInc = dY / step;
-            System.out.println("Nilai xInc " + xInc);
-            System.out.println("Nilai yInc " + yInc);
-            putPixel(g, x, y);
-            for (int i = 1; i <= step; i++) {
-                x = x + xInc;
-                y = y + yInc;
-                System.out.println("Nilai x " + i + " = " + x);
-                System.out.println("Nilai y " + i + " = " + y);
-                putPixel(g, x, y);
-            }
-            putPixel(g, dX, dY);
         }
 
         void showGrid(Graphics g) {
@@ -104,10 +103,9 @@ public class AlgoritmaDDA extends JDialog {
         @Override
         public void paint(Graphics g) {
             initgr();
-            //putPixel(g, 6, 2);
             showGrid(g);
-            //putPixel(g, 30, 10);
-            DDA(g, 6, 2, 30, 10);
+            drawCircle(g, 23, 10, 8);
+            //drawLine2(g, 6, 2, 30, 10);
         }
     }
 }
